@@ -1,0 +1,24 @@
+{{ if .Values.global.fixicc_agent.NLB.enabled }}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fixicc-agent-nlb-external
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "instance"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+{{- range .Values.global.fixicc_agent.NLB.allowCIDR }}
+    - {{ . | squote }}
+{{- end }}
+  selector:
+      app: fixicc-agent
+  ports:
+    - name: agent
+      port: {{ .Values.global.fixicc_agent.port }}
+{{ end }}

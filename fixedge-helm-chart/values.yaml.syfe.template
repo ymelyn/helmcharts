@@ -1,0 +1,58 @@
+global:
+  force_init_configs: false
+  git_configs:
+    url: <git url>
+    branch: <git branch>
+
+  imagePullSecrets: []
+
+  fixedge:
+    image:
+      url: <fe image url>
+      version: <fe image version>
+      imagePullPolicy: Always
+    port: 8901
+    httpAdmPort: 8903
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+    resources:
+      requests:
+        cpu: 2
+        memory: 1Gi
+      limits:
+        cpu: 2
+        memory: 1Gi
+
+  fixicc_agent:
+    image:
+      url: <fixicc-agent image url>
+      version: <fixicc-agent image version>
+      imagePullPolicy: Always
+    port: 8005
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+    NLB:
+      enabled: false    
+    resources:
+      requests:
+        cpu: 1
+        memory: 500Mi
+      limits:
+        cpu: 1
+        memory: 500Mi
+
+  storage:
+    class: syfe-default
+    accessModes: ReadWriteOnce
+    fe_configs:
+      size: 1Gi
+    fixicc_agent_configs:
+      size: 1Gi
+    fe_sessions_logs:
+      size: 10Gi
+    fe_app_logs:
+      size: 10Gi
+    git_repo:
+      size: 1Gi

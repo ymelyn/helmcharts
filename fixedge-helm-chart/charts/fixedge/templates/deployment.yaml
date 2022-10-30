@@ -1,0 +1,111 @@
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fixedge
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: fixedge
+  serviceName: "fixedge"
+  template:
+    metadata:
+      labels:
+        app: fixedge
+        service: fixedge
+    spec:
+      volumes:
+      - name: cache-volume
+        emptyDir: {}
+      - name: fixedge-configs-data
+        persistentVolumeClaim:
+          claimName: fixedge-configs-pvc
+      - name: fixedge-session-logs-data
+        persistentVolumeClaim:
+          claimName: fixedge-session-logs-pvc
+      - name: fixedge-app-logs-data
+        persistentVolumeClaim:
+          claimName: fixedge-app-logs-pvc
+      - name: fixicc-agent-configs-data
+        persistentVolumeClaim:
+          claimName: fixicc-agent-configs-pvc
+      - name: fe-license-file
+        secret:
+          secretName: license-file
+      - name: ssh-creds-files
+        secret:
+          secretName: ssh-creds
+          defaultMode: 256
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: fixedge
+        image: {{ .Values.global.fixedge.image.url }}:{{ .Values.global.fixedge.image.version }}
+        resources:
+{{ toYaml .Values.global.fixedge.resources | indent 10 }}
+        imagePullPolicy: {{ .Values.global.fixedge.image.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.global.fixedge.port }}
+          protocol: TCP
+        - containerPort: {{ .Values.global.fixedge.httpAdmPort }}
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.global.fixedge.httpAdmPort }}
+          initialDelaySeconds: {{ .Values.global.fixedge.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.global.fixedge.livenessProbe.periodSeconds }}
+        volumeMounts:
+        - name: fe-license-file
+          mountPath: /etc/fixedge/engine.license
+          subPath: engine.license
+        - name: fixedge-configs-data
+          mountPath: /etc/fixedge
+        - name: fixedge-session-logs-data
+          mountPath: /var/lib/fixedge
+        - name: fixedge-app-logs-data
+          mountPath: /var/log/fixedge
+      - name: clean-archive
+        image: busybox:1.28
+        command: ['sh', '-c', 'while true; do rm -f * /var/lib/fixedge/archive/*; sleep 24h; done']
+        volumeMounts: 
+        - name: fixedge-session-logs-data
+          mountPath: /var/lib/fixedge
+      initContainers:
+        - name: git-cloner
+          image: alpine/git
+          args:
+              - clone
+              - --single-branch
+              - --branch
+              - {{ .Values.global.git_configs.branch }}
+              - --
+              - {{ .Values.global.git_configs.url }}
+              - /mnt/fe-configs/data
+          volumeMounts: 
+            - name: "ssh-creds-files"
+              mountPath: "/root/.ssh"
+            - name: cache-volume
+              mountPath: "/mnt/fe-configs"
+        - name: copy-configs
+          image: busybox:1.28
+          env:          
+            - name: "force_init_configs"
+              value: {{ .Values.global.force_init_configs | squote }}
+          command: ['sh', '-c', '[[ "${force_init_configs}" == "true" || ! -f "/etc/fixedge/FIXEdge.properties" ]] && cp -R /mnt/fe-configs/data/fixedge/* /etc/fixedge && cp -R /mnt/fe-configs/data/fixicc-agent/* /etc/fixicc-agent && echo "Copy configs - done." || echo "/etc/fixedge/FIXEdge.properties is already exist, skip copying..."']
+          volumeMounts: 
+            - name: cache-volume
+              mountPath: "/mnt/fe-configs"
+            - name: fixedge-configs-data
+              mountPath: /etc/fixedge
+            - name: fixicc-agent-configs-data
+              mountPath: /etc/fixicc-agent
+        - name: dirs-init
+          image: busybox:1.28
+          command: ['sh', '-c', 'mkdir -p /var/lib/fixedge/archive']
+          volumeMounts: 
+            - name: fixedge-session-logs-data
+              mountPath: /var/lib/fixedge

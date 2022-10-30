@@ -1,0 +1,39 @@
+# apiVersion: batch/v1beta1
+# kind: CronJob
+# metadata:
+#   name: volume-backup
+# spec:
+#   schedule: "20 3 * * *"
+#   concurrencyPolicy: Forbid
+#   successfulJobsHistoryLimit: 2
+#   failedJobsHistoryLimit: 2
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: aws-cli
+#               image: amazon/aws-cli
+#               env:
+#                 - name: AWS_ACCESS_KEY_ID
+#                   value: {your_aws_access_key_ID}
+#                 - name: AWS_SECRET_ACCESS_KEY
+#                   value: {your_aws_secret_access_key}
+#                 - name: AWS_REGION
+#                   value: eu-central-1
+#               args:
+#                 - --no-progress
+#                 - --delete
+#                 - s3
+#                 - sync
+#                 - /data
+#                 - s3://your_bucket_name
+#               volumeMounts:
+#                 - name: backup
+#                   mountPath: /data
+#           volumes:
+#             - name: backup
+#               persistentVolumeClaim:
+#                 claimName: {your_pvc_name}
+#           restartPolicy: OnFailure
+#       ttlSecondsAfterFinished: 172800

@@ -1,0 +1,57 @@
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fixicc-agent
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: fixicc-agent
+  serviceName: "fixicc-agent"
+  template:
+    metadata:
+      labels:
+        app: fixicc-agent
+        service: fixicc-agent
+    spec:
+      volumes:
+      - name: fixicc-agent-configs-data
+        persistentVolumeClaim:
+          claimName: fixicc-agent-configs-pvc
+      - name: fixedge-configs-data
+        persistentVolumeClaim:
+          claimName: fixedge-configs-pvc
+      - name: fixedge-app-logs-data
+        persistentVolumeClaim:
+          claimName: fixedge-app-logs-pvc          
+      - name: ssh-creds-files
+        secret:
+          secretName: ssh-creds
+          defaultMode: 256
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: fixicc-agent
+        image: {{ .Values.global.fixicc_agent.image.url }}:{{ .Values.global.fixicc_agent.image.version }}
+        resources:
+{{ toYaml .Values.global.fixicc_agent.resources | indent 10 }}
+        imagePullPolicy: {{ .Values.global.fixicc_agent.image.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.global.fixicc_agent.port }}
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.global.fixicc_agent.port }}
+          initialDelaySeconds: {{ .Values.global.fixicc_agent.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.global.fixicc_agent.livenessProbe.periodSeconds }}
+        volumeMounts:
+        - name: fixicc-agent-configs-data
+          mountPath: /etc/fixicc-agent
+        - name: fixedge-configs-data
+          mountPath: /etc/fixedge          
+        - name: fixedge-app-logs-data
+          mountPath: /var/log/fixedge

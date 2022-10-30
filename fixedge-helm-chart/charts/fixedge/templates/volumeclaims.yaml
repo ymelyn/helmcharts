@@ -1,0 +1,45 @@
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fixedge-configs-pvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - {{ .Values.global.storage.accessModes }}
+  storageClassName: {{ .Values.global.storage.class }}
+  resources:
+    requests:
+      storage: {{ .Values.global.storage.fe_configs.size }}
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fixedge-session-logs-pvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - {{ .Values.global.storage.accessModes }}
+  storageClassName: {{ .Values.global.storage.class }}
+  resources:
+    requests:
+      storage: {{ .Values.global.storage.fe_sessions_logs.size }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fixedge-app-logs-pvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - {{ .Values.global.storage.accessModes }}
+  storageClassName: {{ .Values.global.storage.class }}
+  resources:
+    requests:
+      storage: {{ .Values.global.storage.fe_app_logs.size }}

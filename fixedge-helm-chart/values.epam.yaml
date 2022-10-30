@@ -1,0 +1,59 @@
+global:
+  force_init_configs: false
+  git_configs:
+    url: git@git.epam.com:epm-bfix/syfe/client-configs.git
+    branch: master
+
+  imagePullSecrets: []
+
+  fixedge:
+    image:
+      url: 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixedge
+      version: 6.13.1-518
+      imagePullPolicy: Always
+    port: 8901
+    httpAdmPort: 8903
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+    resources:
+      requests:
+        cpu: 0.5
+        memory: 500Mi
+      limits:
+        cpu: 0.5
+        memory: 500Mi
+
+  fixicc_agent:
+    image:
+      url: 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixicc-agent
+      version: 6.13.1-518
+      imagePullPolicy: Always
+    port: 8005
+    livenessProbe:
+      initialDelaySeconds: 15
+      periodSeconds: 20
+    NLB:
+      enabled: true # turn on for testing on EPAM side
+      allowCIDR:
+        - 86.57.255.88/29
+        - 174.128.60.0/24
+    resources:
+      requests:
+        cpu: 0.2
+        memory: 200Mi
+      limits:
+        cpu: 0.2
+        memory: 200Mi
+
+  storage:
+    class: syfe-default
+    accessModes: ReadWriteOnce
+    fe_configs:
+      size: 1Gi
+    fixicc_agent_configs:
+      size: 1Gi
+    fe_sessions_logs:
+      size: 10Gi
+    fe_app_logs:
+      size: 10Gi
