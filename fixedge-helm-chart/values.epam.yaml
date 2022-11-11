@@ -47,7 +47,7 @@ global:
         memory: 200Mi
 
   storage:
-    class: syfe-default
+    class: storage-default
     accessModes: ReadWriteOnce
     fe_configs:
       size: 1Gi
