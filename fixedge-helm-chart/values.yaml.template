@@ -42,17 +42,3 @@ global:
       limits:
         cpu: 1
         memory: 500Mi
-
-  storage:
-    class: syfe-default
-    accessModes: ReadWriteOnce
-    fe_configs:
-      size: 1Gi
-    fixicc_agent_configs:
-      size: 1Gi
-    fe_sessions_logs:
-      size: 10Gi
-    fe_app_logs:
-      size: 10Gi
-    git_repo:
-      size: 1Gi
