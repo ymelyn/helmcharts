@@ -1,0 +1,5 @@
+storage:
+  class: storage-fixicc-agent
+  accessModes: ReadWriteOnce
+  fixicc_agent_configs:
+    size: 1Gi

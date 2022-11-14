@@ -1,0 +1,9 @@
+ storage:
+   class: storage-fe
+   accessModes: ReadWriteOnce
+   fe_configs:
+     size: 1Gi
+   fe_sessions_logs:
+     size: 10Gi
+   fe_app_logs:
+     size: 10Gi
