@@ -5,16 +5,21 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
 
-  helm repo add <alias> https://morozandralek.github.io/helmcharts
+  helm repo add fixdge https://morozandralek.github.io/helmcharts
 
-If you had already added this repo earlier, run `helm repo update` to retrieve
+If you had already added this repo earlier, run `helm repo update fixedge` to retrieve
 the latest versions of the packages.  You can then run `helm search repo
-<alias>` to see the charts.
+fixedge` to see the charts.
 
-To install the <chart-name> chart:
+To install the charts:
 
-    helm install my-<chart-name> <alias>/<chart-name>
+    kubectl create namespace fixedge
+    kubectl create secret generic license-file --from-file=engine.license -n fixedge
+    kubectl create secret generic ssh-creds --from-file=known_hosts --from-file=id_rsa -n fixedge
+    helm install -n fixedge fixedge fixedge/fixedge -f values.yaml
+    helm install -n fixedge fixicc-agent fixedge/fixicc-agent -f values.yaml
 
 To uninstall the chart:
 
-    helm delete my-<chart-name>
+    helm delete -n fixedge fixedge
+    helm delete -n fixedge fixicc-agent 
