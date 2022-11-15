@@ -29,6 +29,7 @@ spec:
       - name: ssh-creds-files
         secret:
           secretName: ssh-creds
+          optional: false
           defaultMode: 256
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
