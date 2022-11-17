@@ -37,7 +37,7 @@ spec:
       - name: ssh-creds-files
         secret:
           secretName: ssh-creds
-          optional: false
+          optional: true
           defaultMode: 256
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -87,8 +87,8 @@ spec:
               - {{ .Values.global.git_configs.url }}
               - /mnt/fe-configs/data
           volumeMounts: 
-            # - name: "ssh-creds-files"
-            #   mountPath: "/root/.ssh"
+            - name: "ssh-creds-files"
+              mountPath: "/root/.ssh"
             - name: cache-volume
               mountPath: "/mnt/fe-configs"
         - name: copy-configs
