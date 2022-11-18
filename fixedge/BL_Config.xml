@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FIXEdge>
+	<BusinessLayer>
+
+		<!-- From Venue -->
+		<!-- Messages should go to Kafka_Producer topic -->
+		<Rule>
+			<Source>
+				<FixSession SenderCompID="Venue" TargetCompID="FIXEDGE"/>
+			</Source>
+			<Condition>
+				<MatchField Value="8|9" Field="35"/>
+			</Condition>
+			<Action>
+				<Script Language="JavaScript" FileName ="VenueRTN.js"/>
+			</Action>
+		</Rule>
+		<Rule>
+			<Source>
+				<FixSession SenderCompID="Venue" TargetCompID="FIXEDGE"/>
+			</Source>
+			<Condition>
+				<MatchField Value="j" Field="35"/>
+			</Condition>
+			<Action>
+				<Script Language="JavaScript" FileName ="BusinessMsgReject.js"/>
+			</Action>
+		</Rule>
+
+		<!-- From SyFe -->
+		<!-- Messages should go to the Venue from Kafka_Consumer topic-->
+		<Rule>
+			<Source>
+				<Client Name="Kafka_Consumer"/>
+			</Source>
+			<Condition>
+				<MatchField Value="n" Field="35"/>
+			</Condition>
+			<Action>
+				<Script Language="JavaScript" FileName ="KafkaRTN.js"/>
+			</Action>
+		</Rule>
+
+		<!-- ERROR handling -->
+		<!-- Reject type of message Handler -->
+		<OnSessionLevelRejectEvent>
+			<Source Name=".*" />
+			<Action>
+				<Script Language="JavaScript" FileName ="Reject.js"/>
+			</Action>
+		</OnSessionLevelRejectEvent>
+		<!-- JS Error processer -->
+		<OnRuleFailEvent>
+			<Source Name=".*" />
+			<Action>
+				<Script Language="JavaScript" FileName="Error_OnRuleFailEvent.js"/>
+			</Action>
+		</OnRuleFailEvent>
+		<!-- Sending Error processer -->
+		<OnUndeliveredMessageEvent>
+			<Source>
+				<FixSession TargetCompID=".*" SenderCompID=".*"/>
+			</Source>
+			<Action>
+				<Script Language="JavaScript" FileName="Error_OnUndeliveredMessageEvent.js"/>
+			</Action>
+		</OnUndeliveredMessageEvent>
+
+		<DefaultRule>
+			<Action>
+				<DoNothing/>
+			</Action>
+		</DefaultRule>
+
+	</BusinessLayer>
+</FIXEdge>

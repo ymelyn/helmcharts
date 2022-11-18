@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+(c) B2BITS EPAM Systems Company 2000-2017.
+"Licensor" shall mean B2BITS EPAM Systems Company (B2BITS).
+
+This software is for the use of the paying client of B2BITS (which may be
+a corporation, business area, business unit or single user) to whom it was
+delivered (the "Licensee"). The use of this software is subject to
+license terms.
+
+The Licensee acknowledges and agrees that the Software and Documentation
+(the "Confidential Information") is confidential and proprietary to
+the Licensor and the Licensee hereby agrees to use the Confidential
+Information only as permitted by the full license agreement between
+the two parties, to maintain the confidentiality of the Confidential
+Information and not to disclose the confidential information, or any part
+thereof, to any other person, firm or corporation. The Licensee
+acknowledges that disclosure of the Confidential Information may give rise
+to an irreparable injury to the Licensor in-adequately compensable in
+damages. Accordingly the Licensor may seek (without the posting of any
+bond or other security) injunctive relief against the breach of the forgoing
+undertaking of confidentiality and non-disclosure, in addition to any other
+legal remedies which may be available, and the licensee consents to the
+obtaining of such injunctive relief. All of the undertakings and
+obligations relating to confidentiality and non-disclosure, whether
+contained in this section or elsewhere in this agreement, shall survive
+the termination or expiration of this agreement for a period of five (5)
+years.
+
+The Licensor agrees that any information or data received from the Licensee
+in connection with the performance of the support agreement relating to this
+software shall be confidential, will be used only in connection with the
+performance of the Licensor's obligations hereunder, and will not be
+disclosed to third parties, including contractors, without the Licensor's
+express permission in writing.
+
+Information regarding the software may be provided to the Licensee's outside
+auditors and attorneys only to the extent required by their respective
+functions.
+-->
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema targetNamespace="http://www.b2bits.com/FIXProtocol"
+           xmlns="http://www.b2bits.com/FIXProtocol"
+           xmlns:fp="http://www.b2bits.com/FIXProtocol"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" attributeFormDefault="unqualified"
+           version="1.0">
+    <xs:include schemaLocation="fixdic_abstract.xsd"/>
+    <!-- Batch updates of base FIX Protocol specification dictionaries -->
+    <xs:element name="fixdics" type="fixdics"/>
+    <xs:complexType name="fixdics">
+        <xs:sequence>
+            <xs:element name="remove" type="operation" minOccurs="0">
+                <xs:key name="remove-fixdic-id">
+                    <xs:selector xpath=".//fp:fixdic"/>
+                    <xs:field xpath="@id"/>
+                </xs:key>
+            </xs:element>
+            <xs:element name="update" type="operation" minOccurs="0">
+                <xs:key name="update-fixdic-id">
+                    <xs:selector xpath=".//fp:fixdic"/>
+                    <xs:field xpath="@id"/>
+                </xs:key>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="operation">
+        <xs:sequence>
+            <xs:element name="fixdic" type="operation_fixdic" minOccurs="0" maxOccurs="unbounded">
+                <xs:key name="typedef-type">
+                    <xs:selector xpath=".//fp:typedef"/>
+                    <xs:field xpath="@type"/>
+                </xs:key>
+                <xs:key name="valblockdef-id">
+                    <xs:selector xpath=".//fp:valblockdef"/>
+                    <xs:field xpath="@id"/>
+                </xs:key>
+                <xs:key name="fielddef-tag">
+                    <xs:selector xpath=".//fp:fielddef"/>
+                    <xs:field xpath="@tag"/>
+                </xs:key>
+                <xs:key name="blockdef-id">
+                    <xs:selector xpath=".//fp:blockdef"/>
+                    <xs:field xpath="@id"/>
+                </xs:key>
+                <xs:key name="msgdef-msgtype">
+                    <xs:selector xpath=".//fp:msgdef"/>
+                    <xs:field xpath="@msgtype"/>
+                </xs:key>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="operation_fixdic">
+        <xs:complexContent>
+            <xs:extension base="fixdic">
+                <xs:attribute name="parent_id" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

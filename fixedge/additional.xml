@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fixdics>
+    <update>
+        <fixdic
+            id="FIX44Custom"
+            parent_id="FIX44"
+            fixversion="4.4"
+            title="Custom FIX 4.4"
+            date="2022/06/16">
+			<fielddic>
+			<fielddef tag="20001" name="ForceFlag" type="String">
+				<item val="N" id="Will_Follow_Limit">
+					<msgref msgtype="N">Order will follow SGX price check limit</msgref>
+				</item>
+				<item val="Y" id="Outside_Of_Limits">
+					<msgref msgtype="Y">Used to enter orders outside of allowed price limits</msgref>
+				</item>
+				<descr>
+					<p>Force flag</p>
+				</descr>
+			</fielddef>
+			<fielddef tag="30001" name="AllocAccountt" type="String">
+				<descr>
+					<p>Allocation account number (e.g. SGX DA sub-account)</p>
+				</descr>
+			</fielddef>
+			<fielddef tag="90008" name="ExternalClientID" type="String">
+				<descr>
+					<p>Unique identifier of underlying client's customer ID</p>
+				</descr>
+			</fielddef>
+			</fielddic>
+            <msgdic>
+				<msgdef msgtype="D" name="New Order - Single">
+                    <field tag="20001" name="ForceFlag"/>
+					<field tag="30001" name="AllocAccountt"/>
+					<field tag="90008" name="ExternalClientID"/>
+                </msgdef>
+				<msgdef msgtype="8" name="Execution Report">
+                    <field tag="20001" name="ForceFlag"/>
+					<field tag="30001" name="AllocAccountt"/>
+					<field tag="90008" name="ExternalClientID"/>
+                </msgdef>
+            </msgdic>
+        </fixdic>
+    </update>
+</fixdics>
