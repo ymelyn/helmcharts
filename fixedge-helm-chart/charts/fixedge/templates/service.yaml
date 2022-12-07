@@ -11,5 +11,5 @@ spec:
     app: fixedge
   ports:
     - protocol: TCP
-      port: {{ .Values.global.fixedge.port }}
-      targetPort: {{ .Values.global.fixedge.port }}
+      port: {{ .Values.fixedge.port }}
+      targetPort: {{ .Values.fixedge.port }}

@@ -31,24 +31,24 @@ spec:
           secretName: ssh-creds
           optional: true
           defaultMode: 256
-      {{- with .Values.global.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
       - name: fixicc-agent
-        image: {{ .Values.global.fixicc_agent.image.url }}:{{ .Values.global.fixicc_agent.image.version }}
+        image: {{ .Values.fixicc_agent.image.url }}:{{ .Values.fixicc_agent.image.version }}
         resources:
-{{ toYaml .Values.global.fixicc_agent.resources | indent 10 }}
-        imagePullPolicy: {{ .Values.global.fixicc_agent.image.imagePullPolicy }}
+{{ toYaml .Values.fixicc_agent.resources | indent 10 }}
+        imagePullPolicy: {{ .Values.fixicc_agent.image.imagePullPolicy }}
         ports:
-        - containerPort: {{ .Values.global.fixicc_agent.port }}
+        - containerPort: {{ .Values.fixicc_agent.port }}
           protocol: TCP
         livenessProbe:
           tcpSocket:
-            port: {{ .Values.global.fixicc_agent.port }}
-          initialDelaySeconds: {{ .Values.global.fixicc_agent.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.global.fixicc_agent.livenessProbe.periodSeconds }}
+            port: {{ .Values.fixicc_agent.port }}
+          initialDelaySeconds: {{ .Values.fixicc_agent.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.fixicc_agent.livenessProbe.periodSeconds }}
         volumeMounts:
         - name: fixicc-agent-configs-data
           mountPath: /etc/fixicc-agent
