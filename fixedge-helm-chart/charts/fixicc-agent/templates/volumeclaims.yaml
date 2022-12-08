@@ -7,8 +7,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
-    - {{ .Values.storage.accessModes }}
-  storageClassName: {{ .Values.storage.class }}
+    - {{ .Values.fixicc_agent.storage.accessModes }}
+  storageClassName: {{ .Values.fixicc_agent.storage.class }}
   resources:
     requests:
-      storage: {{ .Values.storage.fixicc_agent_configs.size }}
+      storage: {{ .Values.fixicc_agent.storage.fixicc_agent_configs.size }}

@@ -1,13 +1,3 @@
-storage:
-  class: storage-fe
-  accessModes: ReadWriteOnce
-  fe_configs:
-    size: 1Gi
-  fe_sessions_logs:
-    size: 10Gi
-  fe_app_logs:
-    size: 10Gi
-
 force_init_configs: false
 git_configs:
   url: https://github.com/morozandralek/helmcharts.git
@@ -32,3 +22,12 @@ fixedge:
     limits:
       cpu: 0.5
       memory: 500Mi
+  storage:
+    class: storage-fe
+    accessModes: ReadWriteOnce
+    fe_configs:
+      size: 1Gi
+    fe_sessions_logs:
+      size: 10Gi
+    fe_app_logs:
+      size: 10Gi

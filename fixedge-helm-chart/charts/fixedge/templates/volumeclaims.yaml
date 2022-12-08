@@ -7,11 +7,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
-    - {{ .Values.storage.accessModes }}
-  storageClassName: {{ .Values.storage.class }}
+    - {{ .Values.fixedge.storage.accessModes }}
+  storageClassName: {{ .Values.fixedge.storage.class }}
   resources:
     requests:
-      storage: {{ .Values.storage.fe_configs.size }}
+      storage: {{ .Values.fixedge.storage.fe_configs.size }}
 
 
 ---
@@ -23,11 +23,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
-    - {{ .Values.storage.accessModes }}
-  storageClassName: {{ .Values.storage.class }}
+    - {{ .Values.fixedge.storage.accessModes }}
+  storageClassName: {{ .Values.fixedge.storage.class }}
   resources:
     requests:
-      storage: {{ .Values.storage.fe_sessions_logs.size }}
+      storage: {{ .Values.fixedge.storage.fe_sessions_logs.size }}
 
 ---
 
@@ -38,8 +38,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
-    - {{ .Values.storage.accessModes }}
-  storageClassName: {{ .Values.storage.class }}
+    - {{ .Values.fixedge.storage.accessModes }}
+  storageClassName: {{ .Values.fixedge.storage.class }}
   resources:
     requests:
-      storage: {{ .Values.storage.fe_app_logs.size }}
+      storage: {{ .Values.fixedge.storage.fe_app_logs.size }}

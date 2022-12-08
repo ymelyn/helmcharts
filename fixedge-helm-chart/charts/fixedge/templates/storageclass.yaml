@@ -1,4 +1,4 @@
-{{ if eq .Values.storage.class "storage-fe" }}
+{{ if eq .Values.fixedge.storage.class "storage-fe" }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
