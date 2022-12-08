@@ -23,6 +23,8 @@ If you want to use a private repository with configuration for fixedge and fixic
 
     kubectl create secret generic ssh-creds --from-file=known_hosts --from-file=id_rsa --namespace fixedge
 
+*Command to generate known_hosts: `ssh-keyscan -H github.com > known_hosts` where `github.com` is the domain of your svc*
+
 ### Installing the Chart
 To install the chart with the release name `my-release`:
     
@@ -60,6 +62,14 @@ The command removes all the Kubernetes components associated with the chart and 
 | fixedge.fe_sessions_logs.size | Storage size | 1Gi |
 | fixedge.fe_app_logs.size| Storage size | 1Gi |
 
+Run with parameter override:
+
+    helm install fixedge fixedge/fixedge --namespace fixedge\
+    --set fixedge.resources.requests.cpu=1 \
+    --set fixedge.resources.requests.memory=1Gi \
+    --set fixedge.resources.limits.cpu=1 \
+    --set fixedge.resources.limits.memory=1Gi
+
 #### FIXICC:
 
 | Parameter                  |  Description               | Default                    |
@@ -70,9 +80,17 @@ The command removes all the Kubernetes components associated with the chart and 
 | fixicc_agent.port | Application port | 8005 |
 | fixicc_agent.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15 |
 | fixicc_agent.livenessProbe.periodSeconds | How often (in seconds) to perform the probe | 20 |
-| fixicc_agent.NLB.enabled | Use AWS NLB service | true |
+| fixicc_agent.NLB.enabled | Use AWS NLB service | false |
 | fixicc_agent.NLB.allowCIDR | List of allowed addresses for NLB | [] |
 | fixicc_agent.resources | CPU/Memory resource requests/limits | Memory: 200Mi, CPU: 200m |
 | fixicc_agent.storage.class | Storage class name | storage-fixicc-agent |
 | fixicc_agent.storage.accessModes | Access Mode for storage class | ReadWriteOnce |
 | fixicc_agent.storage.fixicc_agent_configs.size | Storage size | 1Gi |
+
+Run with parameter override:
+
+    helm install fixicc-agent fixedge/fixicc-agent --namespace fixedge\
+    --set fixicc_agent.resources.requests.cpu=1 \
+    --set fixicc_agent.resources.requests.memory=1Gi \
+    --set fixicc_agent.resources.limits.cpu=1 \
+    --set fixicc_agent.resources.limits.memory=1Gi

@@ -8,10 +8,8 @@ fixicc_agent:
     initialDelaySeconds: 15
     periodSeconds: 20
   NLB:
-    enabled: true
-    allowCIDR:
-      - 86.57.255.88/29
-      - 174.128.60.0/24
+    enabled: false
+    allowCIDR: []
   resources:
     requests:
       cpu: 0.2
