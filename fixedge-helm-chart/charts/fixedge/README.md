@@ -53,25 +53,25 @@ $ helm delete my-fixedge
 The command removes all the Kubernetes components associated with the chart and deletes the release. 
 
 ## Parameters
-| Parameter                                 | Description                                                      | Default                                         |
-|:----------------------------------------- |:---------------------------------------------------------------- |:----------------------------------------------- |
-| force_init_configs                        | Update config on re-deploy                                       | false                                           |
-| git_configs.url                           | Repository with configuration for fixdge and fixicc-agent        | https://github.com/morozandralek/helmcharts.git |
-| git_configs.branch                        | Branch from the config repository                                | main                                            |
-| imagePullSecrets                          | The secret to downloading an image from a private repository     | []                                              |
-| fixedge.image.url                         | Repository with fixedge image                                    | morozandralek/fixedge                           |
-| fixedge.image.version                     | Version of the fixedge image                                     | 6.15.0                                          |
-| fixedge.image.imagePullPolicy             | Image policy pull options                                        | Always                                          |
-| fixedge.port                              | Application port                                                 | 8901                                            |
-| fixedge.httpAdmPort                       | Admin application port                                           | 8903                                            |
-| fixedge.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15                                              |
-| fixedge.livenessProbe.periodSeconds       | How often (in seconds) to perform the probe                      | 20                                              |
-| fixedge.resources                         | CPU/Memory resource requests/limits                              | Memory: 500Mi, CPU: 500m                        |
-| fixedge.storage.class                     | Storage class name                                               | null (use default provided by K8s)              |
-| fixedge.storage.accessModes               | Access Mode for storage class                                    | ReadWriteOnce                                   |
-| fixedge.fe_configs.size                   | Storage size                                                     | 1Gi                                             |
-| fixedge.fe_sessions_logs.size             | Storage size                                                     | 1Gi                                             |
-| fixedge.fe_app_logs.size                  | Storage size                                                     | 1Gi                                             |
+| Parameter                                 | Description                                                      | Default                                            |
+|:----------------------------------------- |:---------------------------------------------------------------- |:-----------------------------------------------    |
+| force_init_configs                        | Update config on re-deploy                                       | false                                              |
+| git_configs.url                           | Repository with configuration for fixdge and fixicc-agent        | https://github.com/morozandralek/b2bits-config.git |
+| git_configs.branch                        | Branch from the config repository                                | main                                               |
+| imagePullSecrets                          | The secret to downloading an image from a private repository     | []                                                 |
+| fixedge.image.url                         | Repository with fixedge image                                    | morozandralek/fixedge                              |
+| fixedge.image.version                     | Version of the fixedge image                                     | 6.15.0                                             |
+| fixedge.image.imagePullPolicy             | Image policy pull options                                        | Always                                             |
+| fixedge.port                              | Application port                                                 | 8901                                               |
+| fixedge.httpAdmPort                       | Admin application port                                           | 8903                                               |
+| fixedge.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15                                                 |
+| fixedge.livenessProbe.periodSeconds       | How often (in seconds) to perform the probe                      | 20                                                 |
+| fixedge.resources                         | CPU/Memory resource requests/limits                              | Memory: 500Mi, CPU: 500m                           |
+| fixedge.storage.class                     | Storage class name                                               | null (use default provided by K8s)                 |
+| fixedge.storage.accessModes               | Access Mode for storage class                                    | ReadWriteOnce                                      |
+| fixedge.fe_configs.size                   | Storage size                                                     | 1Gi                                                |
+| fixedge.fe_sessions_logs.size             | Storage size                                                     | 1Gi                                                |
+| fixedge.fe_app_logs.size                  | Storage size                                                     | 1Gi                                                |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 

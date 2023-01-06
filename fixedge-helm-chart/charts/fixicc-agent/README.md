@@ -53,24 +53,24 @@ $ helm delete my-fixicc-agent
 The command removes all the Kubernetes components associated with the chart and deletes the release. 
 
 ## Parameters
-| Parameter                                      | Description                                                      | Default                                         |
-| ---------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------- |
-| force_init_configs                             | Update config on re-deploy                                       | false                                           |
-| git_configs.url                                | Repository with configuration for fixdge and fixicc-agent        | https://github.com/morozandralek/helmcharts.git |
-| git_configs.branch                             | Branch from the config repository                                | main                                            |
-| imagePullSecrets                               | The secret to downloading an image from a private repository     | []                                              |
-| fixicc_agent.image.url                         | Repository with fixicc-agent image                               | morozandralek/fixicc-agent                      |
-| fixicc_agent.image.version                     | Version of the fixicc-agent image                                | 6.13.1-518                                      |
-| fixicc_agent.image.imagePullPolicy             | Image policy pull options                                        | Always                                          |
-| fixicc_agent.port                              | Application port                                                 | 8005                                            |
-| fixicc_agent.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15                                              |
-| fixicc_agent.livenessProbe.periodSeconds       | How often (in seconds) to perform the probe                      | 20                                              |
-| fixicc_agent.NLB.enabled                       | Use AWS NLB service                                              | false                                           |
-| fixicc_agent.NLB.allowCIDR                     | List of allowed addresses for NLB                                | []                                              |
-| fixicc_agent.resources                         | CPU/Memory resource requests/limits                              | Memory: 200Mi, CPU: 200m                        |
-| fixicc_agent.storage.class                     | Storage class name                                               | null (use default provided by K8s)              |
-| fixicc_agent.storage.accessModes               | Access Mode for storage class                                    | ReadWriteOnce                                   |
-| fixicc_agent.storage.fixicc_agent_configs.size | Storage size                                                     | 1Gi                                             |
+| Parameter                                      | Description                                                      | Default                                            |
+| ---------------------------------------------- | ---------------------------------------------------------------- | -----------------------------------------------    |
+| force_init_configs                             | Update config on re-deploy                                       | false                                              |
+| git_configs.url                                | Repository with configuration for fixdge and fixicc-agent        | https://github.com/morozandralek/b2bits-config.git |
+| git_configs.branch                             | Branch from the config repository                                | main                                               |
+| imagePullSecrets                               | The secret to downloading an image from a private repository     | []                                                 |
+| fixicc_agent.image.url                         | Repository with fixicc-agent image                               | morozandralek/fixicc-agent                         |
+| fixicc_agent.image.version                     | Version of the fixicc-agent image                                | 6.13.1-518                                         |
+| fixicc_agent.image.imagePullPolicy             | Image policy pull options                                        | Always                                             |
+| fixicc_agent.port                              | Application port                                                 | 8005                                               |
+| fixicc_agent.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15                                                 |
+| fixicc_agent.livenessProbe.periodSeconds       | How often (in seconds) to perform the probe                      | 20                                                 |
+| fixicc_agent.NLB.enabled                       | Use AWS NLB service                                              | false                                              |
+| fixicc_agent.NLB.allowCIDR                     | List of allowed addresses for NLB                                | []                                                 |
+| fixicc_agent.resources                         | CPU/Memory resource requests/limits                              | Memory: 200Mi, CPU: 200m                           |
+| fixicc_agent.storage.class                     | Storage class name                                               | null (use default provided by K8s)                 |
+| fixicc_agent.storage.accessModes               | Access Mode for storage class                                    | ReadWriteOnce                                      |
+| fixicc_agent.storage.fixicc_agent_configs.size | Storage size                                                     | 1Gi                                                |
 
 
 

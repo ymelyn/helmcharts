@@ -1,6 +1,6 @@
 force_init_configs: false
 git_configs:
-  url: https://github.com/morozandralek/helmcharts.git
+  url: https://github.com/morozandralek/b2bits-config.git
   branch: main
 
 imagePullSecrets: []
