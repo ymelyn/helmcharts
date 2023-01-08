@@ -8,7 +8,9 @@ metadata:
 spec:
   accessModes:
     - {{ .Values.fixicc_agent.storage.accessModes }}
+  {{- if .Values.fixicc_agent.storage.class }}
   storageClassName: {{ .Values.fixicc_agent.storage.class }}
+  {{- end }}
   resources:
     requests:
       storage: {{ .Values.fixicc_agent.storage.fixicc_agent_configs.size }}
