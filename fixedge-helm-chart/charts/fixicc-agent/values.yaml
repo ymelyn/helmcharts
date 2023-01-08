@@ -1,7 +1,7 @@
 fixicc_agent:
   image:
-    url: 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixicc-agent
-    version: 6.13.1-518
+    url: morozandralek/fixicc-agent
+    version: latest
     imagePullPolicy: Always
   port: 8005
   livenessProbe:

@@ -7,8 +7,8 @@ imagePullSecrets: []
 
 fixedge:
   image:
-    url: 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixedge
-    version: 6.13.1-518
+    url: morozandralek/fixedge
+    version: latest
     imagePullPolicy: Always
   port: 8901
   httpAdmPort: 8903
