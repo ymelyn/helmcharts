@@ -1,3 +1,10 @@
+force_init_configs: false
+git_configs:
+  url: https://github.com/morozandralek/helmcharts.git
+  branch: main
+
+imagePullSecrets: []
+
 fixicc_agent:
   image:
     url: morozandralek/fixicc-agent

@@ -17,6 +17,8 @@ spec:
         service: fixicc-agent
     spec:
       volumes:
+      - name: cache-volume
+        emptyDir: {}
       - name: fixicc-agent-configs-data
         persistentVolumeClaim:
           claimName: fixicc-agent-configs-pvc
@@ -56,3 +58,30 @@ spec:
           mountPath: /etc/fixedge          
         - name: fixedge-app-logs-data
           mountPath: /var/log/fixedge
+      initContainers:
+        - name: git-cloner
+          image: alpine/git
+          args:
+              - clone
+              - --single-branch
+              - --branch
+              - {{ .Values.git_configs.branch }}
+              - --
+              - {{ .Values.git_configs.url }}
+              - /mnt/fe-configs/data
+          volumeMounts: 
+            - name: "ssh-creds-files"
+              mountPath: "/root/.ssh"
+            - name: cache-volume
+              mountPath: "/mnt/fe-configs"
+        - name: copy-configs
+          image: busybox:1.28
+          env:          
+            - name: "force_init_configs"
+              value: {{ .Values.force_init_configs | squote }}
+          command: ['sh', '-c', '[[ "${force_init_configs}" == "true" || ! -f "/etc/fixicc-agent/agent.properties" ]] && cp -R /mnt/fe-configs/data/fixicc-agent/* /etc/fixicc-agent && echo "Copy configs - done." || echo "/etc/fixicc-agent/agent.properties already exists, skip copying..."']
+          volumeMounts: 
+            - name: cache-volume
+              mountPath: "/mnt/fe-configs"
+            - name: fixicc-agent-configs-data
+              mountPath: /etc/fixicc-agent
