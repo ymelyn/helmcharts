@@ -1,96 +1,67 @@
-# FIXEdge Helm Chart
+# The EPAM B2Bits Library for Kubernetes
 
-### Overview
-FIX server FIXEdge is an application server providing FIX connectivity to multiple clients. Client applications communicate with FIXEdge through one of the multiple transport protocols (e.g. Simple Sockets, JMS, IBM MQ) employing transport adaptors. It is designed to be as easy as possible to install, configure, administrate and monitor trading information flows. It is written in C++ and has a performance profile suitable for the needs of all clients up to and including large sell-side institutions and large volume traders. FIXEdge comes with a rich UI for monitoring session statuses and parameters in real-time.
+Applications, provided by [B2BITS®, EPAM's Capital Markets Competency Center](https://www.b2bits.com), ready to launch on Kubernetes using [Kubernetes Helm](https://helm.sh/).
 
-### Get Repo Info
+## TL;DR
 
-    helm repo add fixedge https://morozandralek.github.io/helmcharts
-    helm repo update
+```
+$ helm repo add b2bits https://morozandralek.github.io/helmcharts
+$ helm search repo b2bits
+$ helm install my-release b2bits/<chart>
+```
 
-*See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation.*
+## Before you begin
 
-### Prepare
-Create the necessary namespace, if necessary, you can use the existing one:
+### Prerequisites
 
-    kubectl create namespace fixedge
+-   Kubernetes 1.21+
+-   Helm 3.9.0+
+-   Valid License Key
 
-Use existing license or request a trial version from sales@btobits.com:
+### Obtain a License Key
+To run most of B2Bits software you will need a valid license key file. You can obtain a trial license from [sales@btobits.com](mailto:sales@b2bits.com).
 
-    kubectl create secret generic license-file --from-file=engine.license --namespace fixedge
+### Setup a Kubernetes Cluster
 
-If you want to use a private repository with configuration for fixedge and fixicc-agent, you need to add a key (by default, the configuration is in the public repository):
+For setting up Kubernetes on the most common cloud platforms or bare-metal servers refer to the Kubernetes [getting started guide](https://kubernetes.io/docs/getting-started-guides/).
 
-    kubectl create secret generic ssh-creds --from-file=known_hosts --from-file=id_rsa --namespace fixedge
+### Install Helm
 
-*Command to generate known_hosts: `ssh-keyscan -H github.com > known_hosts` where `github.com` is the domain of your svc*
+Helm is a tool for managing Kubernetes charts. Charts are packages of pre-configured Kubernetes resources.
 
-### Installing the Chart
-To install the chart with the release name `my-release`:
-    
-    helm install my-release fixedge/fixedge --namespace fixedge
-    helm install my-release fixedge/fixicc-agent --namespace fixedge
+To install Helm, refer to the [Helm install guide](https://github.com/helm/helm#install) and ensure that the `helm` binary is in the `PATH` of your shell.
 
-### Uninstalling the Chart
-To uninstall/delete the my-release deployment:
+### Add Repo
 
-    helm delete my-release --namespace fixedge
+The following command allows you to download and install all the charts from this repository:
 
-The command removes all the Kubernetes components associated with the chart and deletes the release.
+`$ helm repo add b2bits https://morozandralek.github.io/helmcharts`
 
-### Configuration
+### Using Helm
 
-#### FIXEdge:
+Once you have installed the Helm client, you can deploy a B2Bits Helm Chart into a Kubernetes cluster.
 
-| Parameter |  Description | Default |
-| :-------- | :----------- | :------ |
-| force_init_configs | Update config on re-deploy | false |
-| git_configs.url | Repository with configuration for fixdge and fixicc-agent | https://github.com/morozandralek/helmcharts.git |
-| git_configs.branch | Branch from the config repository | main |
-| imagePullSecrets | The secret to downloading an image from a private repository | [] |
-| fixedge.image.url | Repository with fixedge image | 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixedge |
-| fixedge.image.version | Version of the fixedge image | 6.13.1-518 |
-| fixedge.image.imagePullPolicy | Image policy pull options | Always |
-| fixedge.port | Application port | 8901 |
-| fixedge.httpAdmPort | Admin application port  | 8903 |
-| fixedge.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15 |
-| fixedge.livenessProbe.periodSeconds | How often (in seconds) to perform the probe | 20 |
-| fixedge.resources | CPU/Memory resource requests/limits | Memory: 500Mi, CPU: 500m |
-| fixedge.storage.class | Storage class name | storage-fe |
-| fixedge.storage.accessModes | Access Mode for storage class | ReadWriteOnce |
-| fixedge.fe_configs.size | Storage size | 1Gi |
-| fixedge.fe_sessions_logs.size | Storage size | 1Gi |
-| fixedge.fe_app_logs.size| Storage size | 1Gi |
+Please refer to the [Quick Start guide](https://helm.sh/docs/intro/quickstart/) if you wish to get running in just a few commands, otherwise the [Using Helm Guide](https://helm.sh/docs/intro/using_helm/) provides detailed instructions on how to use the Helm client to manage packages on your Kubernetes cluster.
 
-Run with parameter override:
+Useful Helm Client Commands:
 
-    helm install fixedge fixedge/fixedge --namespace fixedge\
-    --set fixedge.resources.requests.cpu=1 \
-    --set fixedge.resources.requests.memory=1Gi \
-    --set fixedge.resources.limits.cpu=1 \
-    --set fixedge.resources.limits.memory=1Gi
+-   View available charts: `helm search repo`
+-   Install a chart: `helm install my-release b2bits/<package-name>`
+-   Upgrade your application: `helm upgrade`
 
-#### FIXICC:
 
-| Parameter                  |  Description               | Default                    |
-| -------------------------- | -------------------------- | -------------------------- |
-| fixicc_agent.image.url | Repository with fixicc-agent image | 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixicc-agent |
-| fixicc_agent.image.version | Version of the fixicc-agent image | 6.13.1-518 |
-| fixicc_agent.image.imagePullPolicy | Image policy pull options | Always |
-| fixicc_agent.port | Application port | 8005 |
-| fixicc_agent.livenessProbe.initialDelaySeconds | Number of seconds after the container has started before startup | 15 |
-| fixicc_agent.livenessProbe.periodSeconds | How often (in seconds) to perform the probe | 20 |
-| fixicc_agent.NLB.enabled | Use AWS NLB service | false |
-| fixicc_agent.NLB.allowCIDR | List of allowed addresses for NLB | [] |
-| fixicc_agent.resources | CPU/Memory resource requests/limits | Memory: 200Mi, CPU: 200m |
-| fixicc_agent.storage.class | Storage class name | storage-fixicc-agent |
-| fixicc_agent.storage.accessModes | Access Mode for storage class | ReadWriteOnce |
-| fixicc_agent.storage.fixicc_agent_configs.size | Storage size | 1Gi |
+## Where to get help
 
-Run with parameter override:
+### Sales Information
 
-    helm install fixicc-agent fixedge/fixicc-agent --namespace fixedge\
-    --set fixicc_agent.resources.requests.cpu=1 \
-    --set fixicc_agent.resources.requests.memory=1Gi \
-    --set fixicc_agent.resources.limits.cpu=1 \
-    --set fixicc_agent.resources.limits.memory=1Gi
+Email: [sales@btobits.com](mailto:sales@b2bits.com)
+
+### Technical Queries
+
+For technical queries please contact [SupportFIXAntenna@epam.com](mailto:SupportFIXAntenna@epam.com)
+
+## License
+
+Copyright © B2BITS EPAM Systems Company 2000-2023 
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
