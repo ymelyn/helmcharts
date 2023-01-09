@@ -28,9 +28,6 @@ spec:
       - name: fixedge-app-logs-data
         persistentVolumeClaim:
           claimName: fixedge-app-logs-pvc
-      - name: fixicc-agent-configs-data
-        persistentVolumeClaim:
-          claimName: fixicc-agent-configs-pvc
       - name: fe-license-file
         secret:
           secretName: license-file
@@ -96,14 +93,12 @@ spec:
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
-          command: ['sh', '-c', '[[ "${force_init_configs}" == "true" || ! -f "/etc/fixedge/FIXEdge.properties" ]] && cp -R /mnt/fe-configs/data/fixedge/* /etc/fixedge && cp -R /mnt/fe-configs/data/fixicc-agent/* /etc/fixicc-agent && echo "Copy configs - done." || echo "/etc/fixedge/FIXEdge.properties is already exist, skip copying..."']
+          command: ['sh', '-c', '[[ "${force_init_configs}" == "true" || ! -f "/etc/fixedge/FIXEdge.properties" ]] && cp -R /mnt/fe-configs/data/fixedge/* /etc/fixedge && echo "Copy configs - done." || echo "/etc/fixedge/FIXEdge.properties already exists, skip copying..."']
           volumeMounts: 
             - name: cache-volume
               mountPath: "/mnt/fe-configs"
             - name: fixedge-configs-data
               mountPath: /etc/fixedge
-            - name: fixicc-agent-configs-data
-              mountPath: /etc/fixicc-agent
         - name: dirs-init
           image: busybox:1.28
           command: ['sh', '-c', 'mkdir -p /var/lib/fixedge/archive']

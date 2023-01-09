@@ -1,7 +1,14 @@
+force_init_configs: false
+git_configs:
+  url: https://github.com/morozandralek/helmcharts.git
+  branch: main
+
+imagePullSecrets: []
+
 fixicc_agent:
   image:
-    url: 611262376458.dkr.ecr.eu-central-1.amazonaws.com/fixicc-agent
-    version: 6.13.1-518
+    url: morozandralek/fixicc-agent
+    version: latest
     imagePullPolicy: Always
   port: 8005
   livenessProbe:
@@ -18,7 +25,12 @@ fixicc_agent:
       cpu: 0.2
       memory: 200Mi
   storage:
-    class: storage-fixicc-agent
+    # The StorageClass to use for the servers' StatefulSet storage. 
+    # A `null` value will use the Kubernetes cluster's default StorageClass. If a default
+    # StorageClass does not exist, you will need to create one.
+    # A `store-aws-ebs-fixicc` value will register StorageClass based on AWS EBS, which is 
+    # suitable for deployment in EKS - see templates/storageclass.yaml for details.
+    class: null
     accessModes: ReadWriteOnce
     fixicc_agent_configs:
       size: 1Gi

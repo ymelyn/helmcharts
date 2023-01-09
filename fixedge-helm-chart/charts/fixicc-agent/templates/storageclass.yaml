@@ -1,8 +1,8 @@
-{{ if eq .Values.fixicc_agent.storage.class "storage-fixicc-agent" }}
+{{ if eq .Values.fixicc_agent.storage.class "store-aws-ebs-fixicc" }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: storage-fixicc-agent
+  name: store-aws-ebs-fixicc
 provisioner: kubernetes.io/aws-ebs
 allowVolumeExpansion: true
 parameters:
