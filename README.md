@@ -2,7 +2,7 @@
 
 Applications, provided by [B2BITS®, EPAM's Capital Markets Competency Center](https://www.b2bits.com), ready to launch on Kubernetes using [Kubernetes Helm](https://helm.sh/).
 
-## TL;DR
+## Quickstart
 
 ```
 $ helm repo add b2bits https://morozandralek.github.io/helmcharts

@@ -3,7 +3,7 @@ This is the Official EPAM B2Bits Helm chart for installing and configuring FIXEd
 
 [Overview of EPAM B2Bits FIXEdge®](https://www.b2bits.com/trading_solutions/fixedge)
 
-## TL;DR
+## Quickstart
 
 ```
 $ kubectl create secret generic license-file --from-file=path/to/engine.license

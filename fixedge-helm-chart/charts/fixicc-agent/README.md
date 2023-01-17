@@ -5,7 +5,7 @@ FIXICC Agent is a sidecar process, that allows to monitor and manage [FIXEdge](h
 
 [Overview of EPAM B2Bits FIX Integrated Control Center®](https://www.b2bits.com/trading_solutions/fixicc)
 
-## TL;DR
+## Quickstart
 
 ```
 $ helm repo add b2bits https://morozandralek.github.io/helmcharts
