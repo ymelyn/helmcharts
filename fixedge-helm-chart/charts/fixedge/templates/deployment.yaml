@@ -68,6 +68,8 @@ spec:
           mountPath: /var/log/fixedge
       - name: clean-archive
         image: busybox:1.28
+        resources:
+{{ toYaml .Values.clean_archive.resources | indent 10 }}
         command: ['sh', '-c', 'while true; do rm -f * /var/lib/fixedge/archive/*; sleep 24h; done']
         volumeMounts: 
         - name: fixedge-session-logs-data

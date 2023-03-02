@@ -36,3 +36,13 @@ fixedge:
       size: 10Gi
     fe_app_logs:
       size: 10Gi
+      
+clean_archive:
+  resources:
+    requests:
+      cpu: 0.2
+      memory: 100Mi
+    limits:
+      cpu: 0.2
+      memory: 100Mi
+      
