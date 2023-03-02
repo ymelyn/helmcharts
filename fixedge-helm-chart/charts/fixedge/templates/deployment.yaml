@@ -73,7 +73,12 @@ spec:
       - name: clean-archive
         image: busybox:1.28
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+          requests:
+            cpu: 0.2
+            memory: 100Mi
+          limits:
+            cpu: 0.2
+            memory: 100Mi
         command: ['sh', '-c', 'while true; do rm -f * /var/lib/fixedge/archive/*; sleep 24h; done']
         volumeMounts: 
         - name: fixedge-session-logs-data
@@ -86,7 +91,12 @@ spec:
         - name: git-cloner
           image: alpine/git
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           args:
               - clone
               - --single-branch
@@ -107,7 +117,12 @@ spec:
         - name: copy-configs
           image: busybox:1.28
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
@@ -124,7 +139,12 @@ spec:
         - name: dirs-init
           image: busybox:1.28
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           command: ['sh', '-c', 'mkdir -p /var/lib/fixedge/archive']
           volumeMounts: 
             - name: fixedge-session-logs-data
