@@ -69,7 +69,7 @@ spec:
       - name: clean-archive
         image: busybox:1.28
         resources:
-{{ toYaml .Values.clean_archive.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 }}
         command: ['sh', '-c', 'while true; do rm -f * /var/lib/fixedge/archive/*; sleep 24h; done']
         volumeMounts: 
         - name: fixedge-session-logs-data
@@ -77,6 +77,8 @@ spec:
       initContainers:
         - name: git-cloner
           image: alpine/git
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           args:
               - clone
               - --single-branch
@@ -92,6 +94,8 @@ spec:
               mountPath: "/mnt/fe-configs"
         - name: copy-configs
           image: busybox:1.28
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
@@ -103,6 +107,8 @@ spec:
               mountPath: /etc/fixedge
         - name: dirs-init
           image: busybox:1.28
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           command: ['sh', '-c', 'mkdir -p /var/lib/fixedge/archive']
           volumeMounts: 
             - name: fixedge-session-logs-data
