@@ -62,6 +62,8 @@ spec:
           runAsNonRoot: true
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
       initContainers:
         - name: git-cloner
           image: alpine/git
@@ -89,6 +91,8 @@ spec:
             runAsNonRoot: true
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false        
+            capabilities:
+              drop: ["ALL"]
         - name: copy-configs
           image: busybox:1.28
           resources:
@@ -110,4 +114,7 @@ spec:
           securityContext:
             runAsNonRoot: true
             readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false              
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            
