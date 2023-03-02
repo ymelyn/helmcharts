@@ -66,9 +66,9 @@ spec:
           mountPath: /var/lib/fixedge
         - name: fixedge-app-logs-data
           mountPath: /var/log/fixedge
-        security_context:
-          readOnlyRootFilesystem: true
+        securityContext:
           runAsNonRoot: true
+          readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
       - name: clean-archive
         image: busybox:1.28
@@ -78,9 +78,9 @@ spec:
         volumeMounts: 
         - name: fixedge-session-logs-data
           mountPath: /var/lib/fixedge
-        security_context:
-          readOnlyRootFilesystem: true
+        securityContext:
           runAsNonRoot: true
+          readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
       initContainers:
         - name: git-cloner
@@ -100,9 +100,9 @@ spec:
               mountPath: "/root/.ssh"
             - name: cache-volume
               mountPath: "/mnt/fe-configs"
-          security_context:
-            readOnlyRootFilesystem: true
+          securityContext:
             runAsNonRoot: true
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
         - name: copy-configs
           image: busybox:1.28
@@ -117,9 +117,9 @@ spec:
               mountPath: "/mnt/fe-configs"
             - name: fixedge-configs-data
               mountPath: /etc/fixedge
-          security_context:
-            readOnlyRootFilesystem: true
+          securityContext:
             runAsNonRoot: true
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
         - name: dirs-init
           image: busybox:1.28
@@ -129,8 +129,8 @@ spec:
           volumeMounts: 
             - name: fixedge-session-logs-data
               mountPath: /var/lib/fixedge
-          security_context:
-            readOnlyRootFilesystem: true
+          securityContext:
             runAsNonRoot: true
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
               
