@@ -9,6 +9,7 @@ spec:
   security_context:
     read_only_root_filesystem: true
     run_as_non_root: true
+    allowPrivilegeEscalation: false
   selector:
     matchLabels:
       app: fixedge
