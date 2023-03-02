@@ -61,6 +61,8 @@ spec:
       initContainers:
         - name: git-cloner
           image: alpine/git
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           args:
               - clone
               - --single-branch
@@ -76,6 +78,8 @@ spec:
               mountPath: "/mnt/fe-configs"
         - name: copy-configs
           image: busybox:1.28
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
