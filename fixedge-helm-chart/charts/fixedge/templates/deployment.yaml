@@ -6,6 +6,8 @@ metadata:
   name: fixedge
   namespace: {{ .Release.Namespace }}
 spec:
+  security_context:
+    read_only_root_filesystem: true
   selector:
     matchLabels:
       app: fixedge
