@@ -8,6 +8,7 @@ metadata:
 spec:
   security_context:
     read_only_root_filesystem: true
+    run_as_non_root: true
   selector:
     matchLabels:
       app: fixedge
