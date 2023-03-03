@@ -66,15 +66,41 @@ spec:
           mountPath: /var/lib/fixedge
         - name: fixedge-app-logs-data
           mountPath: /var/log/fixedge
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
       - name: clean-archive
         image: busybox:1.28
+        resources:
+          requests:
+            cpu: 0.2
+            memory: 100Mi
+          limits:
+            cpu: 0.2
+            memory: 100Mi
         command: ['sh', '-c', 'while true; do rm -f * /var/lib/fixedge/archive/*; sleep 24h; done']
         volumeMounts: 
         - name: fixedge-session-logs-data
           mountPath: /var/lib/fixedge
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
       initContainers:
         - name: git-cloner
           image: alpine/git
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           args:
               - clone
               - --single-branch
@@ -88,8 +114,21 @@ spec:
               mountPath: "/root/.ssh"
             - name: cache-volume
               mountPath: "/mnt/fe-configs"
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
         - name: copy-configs
           image: busybox:1.28
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
@@ -99,9 +138,29 @@ spec:
               mountPath: "/mnt/fe-configs"
             - name: fixedge-configs-data
               mountPath: /etc/fixedge
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
         - name: dirs-init
           image: busybox:1.28
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi
           command: ['sh', '-c', 'mkdir -p /var/lib/fixedge/archive']
           volumeMounts: 
             - name: fixedge-session-logs-data
               mountPath: /var/lib/fixedge
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+              

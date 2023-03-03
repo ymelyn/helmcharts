@@ -58,9 +58,22 @@ spec:
           mountPath: /etc/fixedge          
         - name: fixedge-app-logs-data
           mountPath: /var/log/fixedge
+        securityContext:
+          runAsNonRoot: true
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
       initContainers:
         - name: git-cloner
           image: alpine/git
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi 
           args:
               - clone
               - --single-branch
@@ -74,8 +87,21 @@ spec:
               mountPath: "/root/.ssh"
             - name: cache-volume
               mountPath: "/mnt/fe-configs"
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false        
+            capabilities:
+              drop: ["ALL"]
         - name: copy-configs
           image: busybox:1.28
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 100Mi
+            limits:
+              cpu: 0.2
+              memory: 100Mi 
           env:          
             - name: "force_init_configs"
               value: {{ .Values.force_init_configs | squote }}
@@ -85,3 +111,10 @@ spec:
               mountPath: "/mnt/fe-configs"
             - name: fixicc-agent-configs-data
               mountPath: /etc/fixicc-agent
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            

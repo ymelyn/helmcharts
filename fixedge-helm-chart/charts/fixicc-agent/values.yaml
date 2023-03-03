@@ -26,11 +26,12 @@ fixicc_agent:
       memory: 200Mi
   storage:
     # The StorageClass to use for the servers' StatefulSet storage. 
-    # A `null` value will use the Kubernetes cluster's default StorageClass. If a default
+    # Empty value will use the Kubernetes cluster's default StorageClass. If a default
     # StorageClass does not exist, you will need to create one.
-    # A `store-aws-ebs-fixicc` value will register StorageClass based on AWS EBS, which is 
+    # A `store-aws-ebs-fe` value will register StorageClass based on AWS EBS, which is 
     # suitable for deployment in EKS - see templates/storageclass.yaml for details.
-    class: null
+    class: ""
     accessModes: ReadWriteOnce
     fixicc_agent_configs:
       size: 1Gi
+     
